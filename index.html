@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicativos Vocalía Emergencias Murcia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #0d3b66 0%, #1a659e 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 2.5rem;
+            color: #ff9e00;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #1a659e;
+            transition: transform 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-card h3 {
+            color: #0d3b66;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .stat-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #1a659e;
+        }
+        
+        .stat-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .filters-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+        }
+        
+        .filters-container h2 {
+            color: #0d3b66;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .filter-group {
+            margin-bottom: 0.5rem;
+        }
+        
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #444;
+            font-size: 0.95rem;
+        }
+        
+        .filter-group select,
+        .filter-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            background-color: #f9f9f9;
+            transition: border 0.3s;
+        }
+        
+        .filter-group select:focus,
+        .filter-group input:focus {
+            border-color: #1a659e;
+            outline: none;
+        }
+        
+        .search-indicativo {
+            grid-column: 1 / -1;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: #1a659e;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0d3b66;
+        }
+        
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ddd;
+        }
+        
+        .btn-success {
+            background-color: #2a9d8f;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: #21867a;
+        }
+        
+        .btn-loading {
+            background-color: #ff9e00;
+            color: white;
+        }
+        
+        .file-input-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #f0f7ff;
+            border-radius: 8px;
+            border: 2px dashed #1a659e;
+        }
+        
+        .file-input-container h3 {
+            color: #0d3b66;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .file-input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            flex: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+        }
+        
+        .file-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .results-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            overflow-x: auto;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .results-header h2 {
+            color: #0d3b66;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .results-count {
+            background-color: #f0f7ff;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            color: #1a659e;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+        
+        th {
+            background-color: #f0f7ff;
+            color: #0d3b66;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+            position: sticky;
+            top: 0;
+        }
+        
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .indicativo-cell {
+            font-weight: 700;
+            color: #1a659e;
+        }
+        
+        .poblacion-cell {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .si-cell {
+            color: #2a9d8f;
+            font-weight: 600;
+        }
+        
+        .no-cell {
+            color: #e63946;
+            font-weight: 600;
+        }
+        
+        .unknown-cell {
+            color: #ff9e00;
+            font-weight: 600;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .chart-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .chart-card h3 {
+            color: #0d3b66;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+        
+        footer {
+            background-color: #0d3b66;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .empty-results {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .empty-results i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .loading-container {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
+        .loading-spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #1a659e;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 3rem;
+            color: #e63946;
+            background-color: #ffe6e6;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+        
+        .error-container i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .chart-container {
+                height: 250px;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+            
+            .file-input-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo-container">
+                <i class="fas fa-tower-broadcast logo-icon"></i>
+                <div>
+                    <h1>Indicativos Vocalía Emergencias Murcia</h1>
+                    <p class="subtitle">Sistema de consulta de recursos de radioaficionados para situaciones de emergencia</p>
+                </div>
+            </div>
+            <div>
+                <p><i class="fas fa-database"></i> Cargue su archivo datos.csv</p>
+            </div>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="loading-container" id="loadingContainer" style="display: none;">
+            <div class="loading-spinner"></div>
+            <h3>Procesando archivo CSV...</h3>
+            <p>Por favor, espere mientras se cargan los datos.</p>
+        </div>
+        
+        <div id="errorContainer" class="error-container" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <h3>Error al procesar los datos</h3>
+            <p id="errorMessage">No se pudo cargar o procesar el archivo CSV.</p>
+            <button class="btn btn-primary" id="retryButton" style="margin-top: 1rem;">
+                <i class="fas fa-redo"></i> Intentar de nuevo
+            </button>
+        </div>
+        
+        <div id="mainContent" style="display: none;">
+            <div class="stats-container" id="statsContainer">
+                <!-- Las estadísticas se cargarán aquí con JavaScript -->
+            </div>
+            
+            <div class="filters-container">
+                <h2><i class="fas fa-filter"></i> Filtros de Búsqueda</h2>
+                <div class="filters-grid">
+                    <div class="filter-group search-indicativo">
+                        <label for="searchIndicativo"><i class="fas fa-search"></i> Buscar por Indicativo:</label>
+                        <input type="text" id="searchIndicativo" placeholder="Ej: EA5JSJ, EA5JFU, etc.">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterPoblacion"><i class="fas fa-map-marker-alt"></i> Población:</label>
+                        <select id="filterPoblacion">
+                            <option value="">Todas las poblaciones</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterTipoEstacion"><i class="fas fa-broadcast-tower"></i> Tipo de estación:</label>
+                        <select id="filterTipoEstacion">
+                            <option value="">Todos los tipos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterBandas"><i class="fas fa-wave-square"></i> Bandas:</label>
+                        <select id="filterBandas">
+                            <option value="">Todas las bandas</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterSuministros"><i class="fas fa-bolt"></i> Suministros energéticos:</label>
+                        <select id="filterSuministros">
+                            <option value="">Todos los tipos</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="filterRepetidor"><i class="fas fa-satellite-dish"></i> Repetidor VHF-UHF:</label>
+                        <select id="filterRepetidor">
+                            <option value="">Todos</option>
+                            <option value="SI">Sí</option>
+                            <option value="NO">No</option>
+                            <option value="Desconocido">Desconocido</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="file-input-container">
+                    <h3><i class="fas fa-file-upload"></i> Cargar archivo CSV</h3>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="csvFileInput" accept=".csv,text/csv">
+                        <button class="btn btn-primary" id="loadCsvButton">
+                            <i class="fas fa-upload"></i> Cargar Datos
+                        </button>
+                    </div>
+                    <p class="file-info">Seleccione el archivo datos.csv que contiene la información de los radioaficionados.</p>
+                </div>
+                
+                <div class="buttons-container">
+                    <div>
+                        <button class="btn btn-primary" id="applyFilters">
+                            <i class="fas fa-search"></i> Aplicar Filtros
+                        </button>
+                        <button class="btn btn-secondary" id="resetFilters">
+                            <i class="fas fa-redo"></i> Restablecer Filtros
+                        </button>
+                    </div>
+                    <button class="btn btn-success" id="exportData">
+                        <i class="fas fa-file-export"></i> Exportar Datos Filtrados
+                    </button>
+                </div>
+            </div>
+            
+            <div class="results-container">
+                <div class="results-header">
+                    <h2><i class="fas fa-list"></i> Resultados de la Búsqueda</h2>
+                    <div class="results-count" id="resultsCount">0 indicativos encontrados</div>
+                </div>
+                
+                <div id="resultsTable">
+                    <!-- Los resultados se cargarán aquí con JavaScript -->
+                    <div class="empty-results">
+                        <i class="fas fa-upload"></i>
+                        <h3>Esperando datos</h3>
+                        <p>Cargue un archivo CSV para comenzar a utilizar el sistema de consulta.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="charts-container">
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-pie"></i> Distribución por Población</h3>
+                    <div class="chart-container">
+                        <canvas id="poblacionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <h3><i class="fas fa-chart-bar"></i> Capacidad de Repetidor VHF-UHF</h3>
+                    <div class="chart-container">
+                        <canvas id="repetidorChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="initialState" style="text-align: center; padding: 3rem;">
+            <i class="fas fa-file-csv" style="font-size: 4rem; color: #1a659e; margin-bottom: 1.5rem;"></i>
+            <h2 style="color: #0d3b66; margin-bottom: 1rem;">Bienvenido al sistema de consulta</h2>
+            <p style="color: #666; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                Para comenzar, cargue el archivo <strong>datos.csv</strong> que contiene la información de los radioaficionados.
+                El sistema le permitirá filtrar, buscar y analizar los datos de manera interactiva.
+            </p>
+            <button class="btn btn-primary" id="startButton">
+                <i class="fas fa-play"></i> Comenzar
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-content">
+            <p>Vocalía de Emergencias - Región de Murcia</p>
+            <p>Sistema de consulta de recursos de radioaficionados para situaciones de emergencia</p>
+            <p><i class="fas fa-envelope"></i> ea5hpamurcia@gmail.com </p>
+        </div>
+    </footer>
+
+    <script>
+        // Variables globales
+        let allData = [];
+        let filteredData = [];
+        let poblacionChart = null;
+        let repetidorChart = null;
+
+        // Inicializar la aplicación
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar estado inicial
+            document.getElementById('initialState').style.display = 'block';
+            document.getElementById('mainContent').style.display = 'none';
+            
+            // Configurar eventos
+            document.getElementById('startButton').addEventListener('click', function() {
+                document.getElementById('initialState').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+            });
+            
+            document.getElementById('applyFilters').addEventListener('click', applyFilters);
+            document.getElementById('resetFilters').addEventListener('click', resetFilters);
+            document.getElementById('exportData').addEventListener('click', exportData);
+            document.getElementById('loadCsvButton').addEventListener('click', loadCSVFile);
+            document.getElementById('retryButton').addEventListener('click', function() {
+                document.getElementById('errorContainer').style.display = 'none';
+            });
+            
+            // Cargar CSV cuando se seleccione un archivo
+            document.getElementById('csvFileInput').addEventListener('change', function() {
+                if (this.files.length > 0) {
+                    // Actualizar texto del botón
+                    const fileName = this.files[0].name;
+                    document.getElementById('loadCsvButton').innerHTML = `<i class="fas fa-upload"></i> Cargar: ${fileName}`;
+                }
+            });
+            
+            // Aplicar filtros al pulsar Enter en el campo de búsqueda
+            document.getElementById('searchIndicativo').addEventListener('keyup', function(event) {
+                if (event.key === 'Enter') {
+                    applyFilters();
+                }
+            });
+            
+            // Inicializar gráficos (aunque no haya datos aún)
+            initializeCharts();
+        });
+
+        // Cargar datos desde archivo CSV seleccionado
+        function loadCSVFile() {
+            const fileInput = document.getElementById('csvFileInput');
+            
+            if (fileInput.files.length === 0) {
+                showError('Por favor, seleccione un archivo CSV primero.');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Validar que sea un archivo CSV
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showError('Por favor, seleccione un archivo CSV (extensión .csv).');
+                return;
+            }
+            
+            // Mostrar estado de carga
+            document.getElementById('loadingContainer').style.display = 'block';
+            document.getElementById('errorContainer').style.display = 'none';
+            
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                try {
+                    // Parsear datos CSV
+                    allData = parseCSV(e.target.result);
+                    filteredData = [...allData];
+                    
+                    // Ocultar estado de carga
+                    document.getElementById('loadingContainer').style.display = 'none';
+                    
+                    // Inicializar filtros
+                    initializeFilters();
+                    
+                    // Mostrar estadísticas iniciales
+                    updateStatistics();
+                    
+                    // Mostrar datos iniciales
+                    renderTable();
+                    
+                    // Actualizar gráficos
+                    updateCharts();
+                    
+                    // Mostrar mensaje de éxito
+                    showSuccessMessage(`Archivo "${file.name}" cargado correctamente. ${allData.length} registros procesados.`);
+                    
+                } catch (error) {
+                    console.error('Error al procesar el archivo CSV:', error);
+                    showError(`Error al procesar el archivo CSV: ${error.message}`);
+                }
+            };
+            
+            reader.onerror = function() {
+                showError('Error al leer el archivo. Asegúrese de que el archivo no esté dañado.');
+            };
+            
+            reader.readAsText(file, 'UTF-8');
+        }
+
+        // Mostrar mensaje de éxito
+        function showSuccessMessage(message) {
+            // Crear elemento de notificación
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background-color: #2a9d8f;
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                max-width: 400px;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            notification.innerHTML = `
+                <i class="fas fa-check-circle"></i>
+                <div>
+                    <strong>¡Éxito!</strong><br>
+                    <span style="font-size: 0.9rem;">${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remover después de 5 segundos
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 5000);
+            
+            // Añadir estilos de animación si no existen
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+
+        // Mostrar error
+        function showError(message) {
+            document.getElementById('loadingContainer').style.display = 'none';
+            document.getElementById('errorContainer').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+
+        // Parsear datos CSV
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[0].split(',').map(header => header.trim());
+            
+            const data = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                if (lines[i].trim() === '') continue;
+                
+                const obj = {};
+                let currentLine = lines[i];
+                let insideQuotes = false;
+                let field = '';
+                let fields = [];
+                
+                // Parsear línea teniendo en cuenta comillas
+                for (let j = 0; j < currentLine.length; j++) {
+                    const char = currentLine[j];
+                    const nextChar = j + 1 < currentLine.length ? currentLine[j + 1] : '';
+                    
+                    if (char === '"') {
+                        insideQuotes = !insideQuotes;
+                    } else if (char === ',' && !insideQuotes) {
+                        fields.push(field.trim());
+                        field = '';
+                    } else {
+                        field += char;
+                    }
+                }
+                
+                fields.push(field.trim());
+                
+                // Asignar campos a objeto
+                for (let j = 0; j < headers.length; j++) {
+                    if (j < fields.length) {
+                        obj[headers[j]] = fields[j];
+                    } else {
+                        obj[headers[j]] = '';
+                    }
+                }
+                
+                // Normalizar datos
+                obj['Indicativo:'] = obj['Indicativo:']?.toUpperCase().trim();
+                obj['Población:'] = obj['Población:']?.trim();
+                if (obj['Población:']) {
+                    obj['Población:'] = obj['Población:'].charAt(0).toUpperCase() + obj['Población:'].slice(1).toLowerCase();
+                }
+                
+                // Normalizar respuesta de repetidor
+                if (obj['¿Dispones de equipo que pueda realizar un repetidor de banda cruzada VHF-UHF?']) {
+                    const resp = obj['¿Dispones de equipo que pueda realizar un repetidor de banda cruzada VHF-UHF?'].toUpperCase();
+                    if (resp.includes('SI') && !resp.includes('NO CONOZCO')) {
+                        obj['Repetidor'] = 'SI';
+                    } else if (resp.includes('NO') && !resp.includes('NO CONOZCO')) {
+                        obj['Repetidor'] = 'NO';
+                    } else {
+                        obj['Repetidor'] = 'Desconocido';
+                    }
+                } else {
+                    obj['Repetidor'] = 'Desconocido';
+                }
+                
+                data.push(obj);
+            }
+            
+            return data;
+        }
+
+        // Inicializar opciones de filtros
+        function initializeFilters() {
+            const poblaciones = new Set();
+            const tiposEstacion = new Set();
+            const bandas = new Set();
+            const suministros = new Set();
+            
+            allData.forEach(item => {
+                if (item['Población:']) poblaciones.add(item['Población:']);
+                
+                if (item['Tipo de estación que dispone:']) {
+                    const tipos = item['Tipo de estación que dispone:'].split(',').map(t => t.trim());
+                    tipos.forEach(t => tiposEstacion.add(t));
+                }
+                
+                if (item['Bandas:']) {
+                    const bandasArray = item['Bandas:'].split(',').map(b => b.trim());
+                    bandasArray.forEach(b => bandas.add(b));
+                }
+                
+                if (item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:']) {
+                    suministros.add(item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:']);
+                }
+            });
+            
+            // Ordenar alfabéticamente
+            const poblacionesSorted = Array.from(poblaciones).sort();
+            const tiposEstacionSorted = Array.from(tiposEstacion).sort();
+            const bandasSorted = Array.from(bandas).sort();
+            const suministrosSorted = Array.from(suministros).sort();
+            
+            // Poblar filtro de población
+            const poblacionFilter = document.getElementById('filterPoblacion');
+            poblacionFilter.innerHTML = '<option value="">Todas las poblaciones</option>';
+            poblacionesSorted.forEach(poblacion => {
+                const option = document.createElement('option');
+                option.value = poblacion;
+                option.textContent = poblacion;
+                poblacionFilter.appendChild(option);
+            });
+            
+            // Poblar filtro de tipo de estación
+            const tipoEstacionFilter = document.getElementById('filterTipoEstacion');
+            tipoEstacionFilter.innerHTML = '<option value="">Todos los tipos</option>';
+            tiposEstacionSorted.forEach(tipo => {
+                const option = document.createElement('option');
+                option.value = tipo;
+                option.textContent = tipo;
+                tipoEstacionFilter.appendChild(option);
+            });
+            
+            // Poblar filtro de bandas
+            const bandasFilter = document.getElementById('filterBandas');
+            bandasFilter.innerHTML = '<option value="">Todas las bandas</option>';
+            bandasSorted.forEach(banda => {
+                const option = document.createElement('option');
+                option.value = banda;
+                option.textContent = banda;
+                bandasFilter.appendChild(option);
+            });
+            
+            // Poblar filtro de suministros
+            const suministrosFilter = document.getElementById('filterSuministros');
+            suministrosFilter.innerHTML = '<option value="">Todos los tipos</option>';
+            suministrosSorted.forEach(suministro => {
+                const option = document.createElement('option');
+                option.value = suministro;
+                option.textContent = suministro.length > 50 ? suministro.substring(0, 50) + '...' : suministro;
+                option.title = suministro;
+                suministrosFilter.appendChild(option);
+            });
+        }
+
+        // Aplicar filtros
+        function applyFilters() {
+            if (allData.length === 0) {
+                showError('No hay datos cargados. Por favor, cargue un archivo CSV primero.');
+                return;
+            }
+            
+            const searchIndicativo = document.getElementById('searchIndicativo').value.trim().toUpperCase();
+            const filterPoblacion = document.getElementById('filterPoblacion').value;
+            const filterTipoEstacion = document.getElementById('filterTipoEstacion').value;
+            const filterBandas = document.getElementById('filterBandas').value;
+            const filterSuministros = document.getElementById('filterSuministros').value;
+            const filterRepetidor = document.getElementById('filterRepetidor').value;
+            
+            filteredData = allData.filter(item => {
+                // Filtrar por indicativo (búsqueda)
+                if (searchIndicativo && !item['Indicativo:'].includes(searchIndicativo)) {
+                    return false;
+                }
+                
+                // Filtrar por población
+                if (filterPoblacion && item['Población:'] !== filterPoblacion) {
+                    return false;
+                }
+                
+                // Filtrar por tipo de estación
+                if (filterTipoEstacion && item['Tipo de estación que dispone:'] && 
+                    !item['Tipo de estación que dispone:'].includes(filterTipoEstacion)) {
+                    return false;
+                }
+                
+                // Filtrar por bandas
+                if (filterBandas && item['Bandas:'] && !item['Bandas:'].includes(filterBandas)) {
+                    return false;
+                }
+                
+                // Filtrar por suministros
+                if (filterSuministros && item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:'] !== filterSuministros) {
+                    return false;
+                }
+                
+                // Filtrar por repetidor
+                if (filterRepetidor && item['Repetidor'] !== filterRepetidor) {
+                    return false;
+                }
+                
+                return true;
+            });
+            
+            // Actualizar vista
+            updateStatistics();
+            renderTable();
+            updateCharts();
+        }
+
+        // Restablecer filtros
+        function resetFilters() {
+            document.getElementById('searchIndicativo').value = '';
+            document.getElementById('filterPoblacion').value = '';
+            document.getElementById('filterTipoEstacion').value = '';
+            document.getElementById('filterBandas').value = '';
+            document.getElementById('filterSuministros').value = '';
+            document.getElementById('filterRepetidor').value = '';
+            
+            filteredData = [...allData];
+            updateStatistics();
+            renderTable();
+            updateCharts();
+        }
+
+        // Exportar datos filtrados
+        function exportData() {
+            if (filteredData.length === 0) {
+                alert('No hay datos para exportar');
+                return;
+            }
+            
+            const headers = ['Indicativo:', 'Población:', 'Tipo de estación que dispone:', 'Bandas:', 'Suministros energéticos', 'Repetidor VHF-UHF', 'Información adicional'];
+            
+            let csvContent = headers.join(';') + '\n';
+            
+            filteredData.forEach(item => {
+                const row = [
+                    item['Indicativo:'],
+                    item['Población:'],
+                    item['Tipo de estación que dispone:'],
+                    item['Bandas:'],
+                    item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:'],
+                    item['Repetidor'],
+                    item['Indica información adicional a las respuestas "OTRO/OTRAS"']
+                ].map(field => `"${field}"`).join(';');
+                
+                csvContent += row + '\n';
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'indicativos_emergencias_murcia.csv');
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Actualizar estadísticas
+        function updateStatistics() {
+            const totalIndicativos = filteredData.length;
+            const indicativosConSuministros = filteredData.filter(item => 
+                item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:'] && 
+                item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:'].trim() !== ''
+            ).length;
+            
+            const indicativosConRepetidor = filteredData.filter(item => item['Repetidor'] === 'SI').length;
+            const indicativosConHF = filteredData.filter(item => 
+                item['Bandas:'] && item['Bandas:'].includes('HF')
+            ).length;
+            
+            const statsContainer = document.getElementById('statsContainer');
+            statsContainer.innerHTML = `
+                <div class="stat-card">
+                    <h3>Total de Indicativos</h3>
+                    <div class="stat-value">${totalIndicativos}</div>
+                    <p class="stat-description">Radioaficionados registrados</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Con Suministros Energéticos</h3>
+                    <div class="stat-value">${indicativosConSuministros}</div>
+                    <p class="stat-description">${totalIndicativos > 0 ? Math.round((indicativosConSuministros / totalIndicativos) * 100) : 0}% del total</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Con Repetidor VHF-UHF</h3>
+                    <div class="stat-value">${indicativosConRepetidor}</div>
+                    <p class="stat-description">Capacidad de banda cruzada</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Con Banda HF</h3>
+                    <div class="stat-value">${indicativosConHF}</div>
+                    <p class="stat-description">Comunicaciones de larga distancia</p>
+                </div>
+            `;
+            
+            // Actualizar contador de resultados
+            document.getElementById('resultsCount').textContent = `${totalIndicativos} indicativos encontrados`;
+        }
+
+        // Renderizar tabla de resultados
+        function renderTable() {
+            const resultsTable = document.getElementById('resultsTable');
+            
+            if (filteredData.length === 0) {
+                resultsTable.innerHTML = `
+                    <div class="empty-results">
+                        <i class="fas fa-search"></i>
+                        <h3>No se encontraron resultados</h3>
+                        <p>Intente ajustar los filtros de búsqueda.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            let tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Indicativo</th>
+                            <th>Población</th>
+                            <th>Tipo de Estación</th>
+                            <th>Bandas</th>
+                            <th>Suministros Energéticos</th>
+                            <th>Repetidor VHF-UHF</th>
+                            <th>Información Adicional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            filteredData.forEach(item => {
+                const repetidorClass = item['Repetidor'] === 'SI' ? 'si-cell' : 
+                                      item['Repetidor'] === 'NO' ? 'no-cell' : 'unknown-cell';
+                
+                // Acortar texto largo para mejor visualización
+                const suministrosText = item['SUMINISTROS ENERGÉTICOS ALTERNATIVOS DE EMERGENCIA QUE DISPONES:'] || '';
+                const suministrosDisplay = suministrosText.length > 50 ? 
+                    suministrosText.substring(0, 50) + '...' : suministrosText;
+                
+                const infoAdicional = item['Indica información adicional a las respuestas "OTRO/OTRAS"'] || '';
+                const infoDisplay = infoAdicional.length > 60 ? 
+                    infoAdicional.substring(0, 60) + '...' : infoAdicional;
+                
+                tableHTML += `
+                    <tr>
+                        <td class="indicativo-cell">${item['Indicativo:']}</td>
+                        <td class="poblacion-cell">${item['Población:'] || 'No especificado'}</td>
+                        <td>${item['Tipo de estación que dispone:'] || 'No especificado'}</td>
+                        <td>${item['Bandas:'] || 'No especificado'}</td>
+                        <td title="${suministrosText}">${suministrosDisplay || 'No especificado'}</td>
+                        <td class="${repetidorClass}">${item['Repetidor']}</td>
+                        <td title="${infoAdicional}">${infoDisplay}</td>
+                    </tr>
+                `;
+            });
+            
+            tableHTML += `
+                    </tbody>
+                </table>
+            `;
+            
+            resultsTable.innerHTML = tableHTML;
+        }
+
+        // Inicializar gráficos
+        function initializeCharts() {
+            const poblacionCtx = document.getElementById('poblacionChart').getContext('2d');
+            const repetidorCtx = document.getElementById('repetidorChart').getContext('2d');
+            
+            // Colores para gráficos
+            const chartColors = {
+                primary: '#1a659e',
+                secondary: '#2a9d8f',
+                success: '#2a9d8f',
+                danger: '#e63946',
+                warning: '#ff9e00',
+                info: '#4cc9f0',
+                dark: '#0d3b66'
+            };
+            
+            // Gráfico de población
+            poblacionChart = new Chart(poblacionCtx, {
+                type: 'pie',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        data: [],
+                        backgroundColor: [
+                            chartColors.primary,
+                            chartColors.secondary,
+                            chartColors.success,
+                            chartColors.warning,
+                            chartColors.info,
+                            chartColors.danger,
+                            '#9d4edd',
+                            '#f72585',
+                            '#fb8500',
+                            '#0077b6'
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right',
+                            labels: {
+                                padding: 20,
+                                font: {
+                                    size: 11
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de repetidor
+            repetidorChart = new Chart(repetidorCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Sí', 'No', 'Desconocido'],
+                    datasets: [{
+                        label: 'Cantidad',
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            chartColors.success,
+                            chartColors.danger,
+                            chartColors.warning
+                        ],
+                        borderWidth: 1,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Actualizar gráficos con datos filtrados
+        function updateCharts() {
+            if (filteredData.length === 0) {
+                // Limpiar gráficos si no hay datos
+                poblacionChart.data.labels = [];
+                poblacionChart.data.datasets[0].data = [];
+                poblacionChart.update();
+                
+                repetidorChart.data.datasets[0].data = [0, 0, 0];
+                repetidorChart.update();
+                return;
+            }
+            
+            // Actualizar gráfico de población
+            const poblacionesCount = {};
+            filteredData.forEach(item => {
+                const poblacion = item['Población:'] || 'No especificado';
+                poblacionesCount[poblacion] = (poblacionesCount[poblacion] || 0) + 1;
+            });
+            
+            // Ordenar poblaciones por cantidad (de mayor a menor) y tomar las 10 principales
+            const poblacionesSorted = Object.entries(poblacionesCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            
+            const poblacionesLabels = poblacionesSorted.map(item => item[0]);
+            const poblacionesData = poblacionesSorted.map(item => item[1]);
+            
+            poblacionChart.data.labels = poblacionesLabels;
+            poblacionChart.data.datasets[0].data = poblacionesData;
+            poblacionChart.update();
+            
+            // Actualizar gráfico de repetidor
+            const repetidorCount = {
+                'SI': 0,
+                'NO': 0,
+                'Desconocido': 0
+            };
+            
+            filteredData.forEach(item => {
+                repetidorCount[item['Repetidor']]++;
+            });
+            
+            repetidorChart.data.datasets[0].data = [
+                repetidorCount['SI'],
+                repetidorCount['NO'],
+                repetidorCount['Desconocido']
+            ];
+            repetidorChart.update();
+        }
+    </script>
+</body>
+</html>
